@@ -4,7 +4,11 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,9 +18,27 @@ public class Elevator extends SubsystemBase {
   /** Creates a new Elevator. */
   TalonFX master;
   TalonFX slave;
+  TalonFXConfigurator motorConfigurator;
+  TalonFXConfiguration mTalonFXConfiguration;
+  final PositionVoltage m_request = new PositionVoltage(0).withSlot(0);
   public Elevator() {
     master = new TalonFX(Constants.ElevatorConstants.masterID);
     slave = new TalonFX(Constants.ElevatorConstants.slaveID);
+    mTalonFXConfiguration.Feedback.SensorToMechanismRatio = Constants.ElevatorConstants.elevatorGearRatio;
+    mTalonFXConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
+    mTalonFXConfiguration.CurrentLimits.SupplyCurrentLimit = 40;
+    mTalonFXConfiguration.SoftwareLimitSwitch.ForwardSoftLimitEnable=true;
+    mTalonFXConfiguration.SoftwareLimitSwitch.ForwardSoftLimitThreshold = (30/Constants.ElevatorConstants.sprocketCircumference);
+    mTalonFXConfiguration.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0;
+    mTalonFXConfiguration.Audio.AllowMusicDurDisable = true;
+    var slot0Configs = new Slot0Configs();
+    slot0Configs.kP = 2.4;
+    slot0Configs.kI = 0;
+    slot0Configs.kD = 0.1;
+    mTalonFXConfiguration.Slot0 = slot0Configs;
+    
+    motorConfigurator = master.getConfigurator();
+    motorConfigurator.apply(mTalonFXConfiguration);
     slave.setControl(new Follower(Constants.ElevatorConstants.masterID, false));
   }
 
@@ -27,5 +49,9 @@ public class Elevator extends SubsystemBase {
 
   public void setPercentage(double percent){
     master.set(percent);
+  }
+
+  public void setControl(double position){
+    master.setControl(m_request.withPosition(position/Constants.ElevatorConstants.sprocketCircumference));
   }
 }
