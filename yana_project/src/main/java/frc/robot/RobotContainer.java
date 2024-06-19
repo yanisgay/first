@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.commands.SetPercentage;
+import frc.robot.commands.SetPosition;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,6 +22,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     controller.square().onTrue(new SetPercentage(0.2));
+    controller.circle().onTrue(new SetPosition(0.3));
   }
 
 

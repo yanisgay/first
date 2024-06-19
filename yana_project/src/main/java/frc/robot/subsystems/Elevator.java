@@ -28,7 +28,7 @@ public class Elevator extends SubsystemBase {
     mTalonFXConfiguration.Feedback.SensorToMechanismRatio = Constants.ElevatorConstants.elevatorGearRatio;
     mTalonFXConfiguration.CurrentLimits.SupplyCurrentLimitEnable = true;
     mTalonFXConfiguration.CurrentLimits.SupplyCurrentLimit = 40;
-    mTalonFXConfiguration.SoftwareLimitSwitch.ForwardSoftLimitEnable=true;
+    mTalonFXConfiguration.SoftwareLimitSwitch.ForwardSoftLimitEnable=false;
     mTalonFXConfiguration.SoftwareLimitSwitch.ForwardSoftLimitThreshold = (30/Constants.ElevatorConstants.sprocketCircumference);
     mTalonFXConfiguration.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0;
     mTalonFXConfiguration.Audio.AllowMusicDurDisable = true;
