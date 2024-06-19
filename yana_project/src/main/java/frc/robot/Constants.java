@@ -18,5 +18,7 @@ public final class Constants {
     public static final int slaveID = 6;
     public static final double elevatorGearRatio = 23;
     public static final double sprocketCircumference = 1;
+    public static final double kP = 1;
+    
   }
 }
